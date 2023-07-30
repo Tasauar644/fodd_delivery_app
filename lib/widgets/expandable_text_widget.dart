@@ -7,8 +7,10 @@ import 'package:food_delivery_app/widgets/SmallText.dart';
 class ExpandableTextWidget extends StatefulWidget {
   final String text;
 
+
   const ExpandableTextWidget({super.key,
-    required this.text});
+    required this.text,
+  });
 
   @override
   State<ExpandableTextWidget> createState() => _ExpandableTextWidgetState();
@@ -38,7 +40,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
     return  Container(
       child: lastHalf.isEmpty?SmallText(text: firstHalf):Column(
         children: [
-          SmallText(text: hiddenText?(firstHalf+"...."):(firstHalf+lastHalf)),
+          SmallText(text: hiddenText?(firstHalf+"...."):(firstHalf+lastHalf),color: Colors.black87,),
           InkWell(
             onTap: (){
               setState(() {
