@@ -1,11 +1,16 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/controllers/populer_product_controller.dart';
+import 'package:food_delivery_app/utils/app_constants.dart';
 import 'package:food_delivery_app/utils/colors.dart';
 import 'package:food_delivery_app/utils/dimensions.dart';
 import 'package:food_delivery_app/widgets/BigText.dart';
 import 'package:food_delivery_app/widgets/SmallText.dart';
 import 'package:food_delivery_app/widgets/icon_text_widget.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+
+import '../../models/products_model.dart';
 
 class FoodPageBody extends StatefulWidget {
   const FoodPageBody({super.key});
@@ -40,29 +45,36 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     return Column(
       children: [
         //slide section
-        Container(
-          height: Dimensions.pageView,
-          child: PageView.builder(
-            controller: pageController,
-            itemCount: 5,
-            itemBuilder: (context, position) {
-              return _buildPageItem(position);
-            },
-          ),
-        ),
+
+        GetBuilder<PopularProductController>(builder: (popularproductcontroller){
+            return  Container(
+              height: Dimensions.pageView,
+              child: PageView.builder(
+                controller: pageController,
+                itemCount: popularproductcontroller.popularProductList.length,
+                itemBuilder: (context, position) {
+                  return _buildPageItem(position,popularproductcontroller.popularProductList[position]);
+                },
+              ),
+            );
+        }),
+
         //dots
-        DotsIndicator(
-          dotsCount: 5,
-          position: _currentPage,
-          decorator: DotsDecorator(
-            size: const Size.square(9.0),
-            activeColor: Appcolors.maincolor,
-            activeSize: const Size(18.0, 9.0),
-            activeShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
+        GetBuilder<PopularProductController>(builder: (popularproductcontroller){
+          return DotsIndicator(
+            dotsCount: popularproductcontroller.popularProductList.isEmpty?1:popularproductcontroller.popularProductList.length,
+            position: _currentPage,
+            decorator: DotsDecorator(
+              size: const Size.square(9.0),
+              activeColor: Appcolors.maincolor,
+              activeSize: const Size(18.0, 9.0),
+              activeShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
             ),
-          ),
-        ),
+          );
+        }),
+
         //popular text
         SizedBox(height: Dimensions.height30,),
         Container(
@@ -167,7 +179,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     );
   }
 
-  Widget _buildPageItem(int index) {
+  Widget _buildPageItem(int index,ProductModel popularProductList) {
     Matrix4 matrix4 = Matrix4.identity();
     if (index == _currentPage) {
       var curScale = 1 - (_currentPage - index) * (1 - scaleFactor);
@@ -189,7 +201,9 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               color: index.isEven ? Color(0xFFccc7c5) : Color(0xFF89dad0),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage("assets/images/food.jpg"),
+                image: NetworkImage(
+                 AppConstants.APP_URL+"/uploads/"+popularProductList.img!
+                ),
               ),
             ),
           ),
@@ -222,7 +236,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BigText(text: "Biriyani Side"),
+                    BigText(text: popularProductList.name!),
                     SizedBox(height: Dimensions.height12),
                     Row(
                       children: [
