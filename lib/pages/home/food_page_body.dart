@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/controllers/populer_product_controller.dart';
+import 'package:food_delivery_app/controllers/recommended_product_controller.dart';
 import 'package:food_delivery_app/utils/app_constants.dart';
 import 'package:food_delivery_app/utils/colors.dart';
 import 'package:food_delivery_app/utils/dimensions.dart';
@@ -45,7 +46,6 @@ class _FoodPageBodyState extends State<FoodPageBody> {
     return Column(
       children: [
         //slide section
-
         GetBuilder<PopularProductController>(builder: (popularproductcontroller){
             return  Container(
               height: Dimensions.pageView,
@@ -75,13 +75,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           );
         }),
 
-        //popular text
+        //Recommended text
         SizedBox(height: Dimensions.height30,),
         Container(
           margin: EdgeInsets.only(left: Dimensions.width30),
           child: Row(
             children: [
-              BigText(text: "Popular"),
+              BigText(text: "Recommended"),
               SizedBox(width: Dimensions.width10,),
               Container(
                 child: BigText(text: ".",color: Colors.black26,),
@@ -93,87 +93,91 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             ],
           ),
         ),
-        //ListView builder
-       Container(
-         height: 700,
-         child:  ListView.builder(
-           physics:NeverScrollableScrollPhysics(),
-           //shrinkWrap: true,
-             itemCount: 5,
-             itemBuilder:
-                 (context,index){
-               return Container(
-                 margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20,bottom: Dimensions.height15),
-                 child: Row(
-                   children: [
-                     //image container
-                     Container(
-                       width:120,
-                       height: 120,
-                       decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(Dimensions.radius20),
-                           color: Colors.white38,
-                           image: DecorationImage(
-                             fit: BoxFit.cover,
-                               image: AssetImage(
-                                   "assets/images/food.jpg"
-                               )
-                           )
 
-                       ),
+       // recommended foods suggestion starts here
+        GetBuilder<RecommendedProductController>(builder:(recommendedProductControllerObject){
+          return Container(
+            height: 700,
+            child:  ListView.builder(
+                physics:NeverScrollableScrollPhysics(),
+                //shrinkWrap: true,
+                itemCount: recommendedProductControllerObject.recommendedProductList.length,
+                itemBuilder:
+                    (context,index){
+                  return Container(
+                    margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20,bottom: Dimensions.height15),
+                    child: Row(
+                      children: [
+                        //image container
+                        Container(
+                          width:120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(Dimensions.radius20),
+                              color: Colors.white38,
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                   AppConstants.APP_URL+"/uploads/"+recommendedProductControllerObject.recommendedProductList[index].img!
+                                  )
+                              )
 
-                     ),
-                     Expanded(
-                       child: Container(
-                         height: 115,
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.only(
-                             topRight: Radius.circular(Dimensions.radius20),
-                             bottomRight: Radius.circular(Dimensions.radius20)
-                           ),
-                           color: Colors.white ,
-                         ),
-                         padding: EdgeInsets.only(left: Dimensions.width10,right: Dimensions.width10),
-                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           children: [
-                             BigText(text: "One of the best food in Bangladesh"),
-                             SizedBox(height: Dimensions.height12),
-                             SmallText(text: "Some kind of description"),
-                             SizedBox(height: Dimensions.height12),
-                             Row(
-                               children: [
-                                 IconAndWidget(
-                                   icon: Icons.circle_sharp,
-                                   text: "normal",
-                                   iconColor: Appcolors.iconcolor1,
-                                 ),
-                                 SizedBox(width: Dimensions.width5),
-                                 IconAndWidget(
-                                   icon: Icons.location_on,
-                                   text: "3km",
-                                   iconColor: Appcolors.maincolor,
-                                 ),
-                                 SizedBox(width:Dimensions.width5),
-                                 IconAndWidget(
-                                   icon: Icons.access_time_rounded,
-                                   text: "32min",
-                                   iconColor: Appcolors.iconcolor2,
-                                 ),
-                               ],
-                             ),
-                           ],
-                         ),
-                       ),
+                          ),
 
-                     )
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 115,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(Dimensions.radius20),
+                                  bottomRight: Radius.circular(Dimensions.radius20)
+                              ),
+                              color: Colors.white ,
+                            ),
+                            padding: EdgeInsets.only(left: Dimensions.width10,right: Dimensions.width10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                BigText(text: recommendedProductControllerObject.recommendedProductList[index].name),
+                                SizedBox(height: Dimensions.height12),
+                                SmallText(text: "description"),
+                                SizedBox(height: Dimensions.height12),
+                                Row(
+                                  children: [
+                                    IconAndWidget(
+                                      icon: Icons.circle_sharp,
+                                      text: "normal",
+                                      iconColor: Appcolors.iconcolor1,
+                                    ),
+                                    SizedBox(width: Dimensions.width5),
+                                    IconAndWidget(
+                                      icon: Icons.location_on,
+                                      text: "3km",
+                                      iconColor: Appcolors.maincolor,
+                                    ),
+                                    SizedBox(width:Dimensions.width5),
+                                    IconAndWidget(
+                                      icon: Icons.access_time_rounded,
+                                      text: "32min",
+                                      iconColor: Appcolors.iconcolor2,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
 
-                   ],
-                 ),
-               );
-             }),
-       )
+                        )
+
+                      ],
+                    ),
+                  );
+                }),
+          );
+
+        }),
 
       ],
     );

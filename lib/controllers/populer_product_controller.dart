@@ -1,6 +1,5 @@
 import 'package:food_delivery_app/models/products_model.dart';
 import 'package:get/get.dart';
-
 import '../data/repository/popular_food_repo.dart';
 
 class PopularProductController extends GetxController{
