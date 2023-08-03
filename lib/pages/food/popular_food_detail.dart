@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/controllers/populer_product_controller.dart';
+import 'package:food_delivery_app/routes/route_helper.dart';
+import 'package:food_delivery_app/utils/app_constants.dart';
 import 'package:food_delivery_app/utils/colors.dart';
 import 'package:food_delivery_app/utils/dimensions.dart';
 import 'package:food_delivery_app/widgets/BigText.dart';
 import 'package:food_delivery_app/widgets/app_column.dart';
 import 'package:food_delivery_app/widgets/app_icon.dart';
 import 'package:food_delivery_app/widgets/expandable_text_widget.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class PopularFoodDetails extends StatelessWidget {
-  const PopularFoodDetails({super.key});
+  int pageId;
+   PopularFoodDetails({super.key,
+    required this.pageId}
+      );
 
   @override
   Widget build(BuildContext context) {
+    var product=Get.find<PopularProductController>().popularProductList[pageId];
     return Scaffold(
       body: Stack(
         children: [
@@ -24,8 +33,8 @@ class PopularFoodDetails extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(
-                      "assets/images/food.jpg",
+                    image: NetworkImage(
+                      AppConstants.APP_URL+"/uploads/"+product.img!
                     )
                   )
                 ),
@@ -38,7 +47,12 @@ class PopularFoodDetails extends StatelessWidget {
               child:Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppIconWidget(icon: Icons.arrow_back_ios,size: Dimensions.widgetSize50,),
+                  GestureDetector(
+                  onTap: (){
+                    Get.toNamed(RouteHelper.getInitial());
+                  }
+                  ,child: AppIconWidget(icon: Icons.arrow_back_ios,size: Dimensions.widgetSize50,)
+              ),
                   AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,)
                   
 
@@ -62,13 +76,13 @@ class PopularFoodDetails extends StatelessWidget {
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppIcon(text: "Biriyani site"),
+                    AppIcon(text: product.name!),
                     SizedBox(height: Dimensions.height12,),
                     BigText(text: "Introduce"),
                     SizedBox(height: Dimensions.height12,),
                     Expanded(
                       child: SingleChildScrollView(
-                          child: ExpandableTextWidget(text: "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.")),
+                          child: ExpandableTextWidget(text: product.description!)),
                     )
                   ],
                 ),
@@ -77,50 +91,62 @@ class PopularFoodDetails extends StatelessWidget {
 
         ],
       ),
-      bottomNavigationBar: Container(
-        height: Dimensions.navigatorHeight120,
-        padding: EdgeInsets.only(top: Dimensions.height30,bottom: Dimensions.height30,left: Dimensions.width20,right: Dimensions.width20),
-        decoration: BoxDecoration(
-          color: Appcolors.buttonbackgroundcolor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.radius20),
-            topRight: Radius.circular(Dimensions.radius20)
-          )
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            //first -0+ container
-            Container(
-              padding: EdgeInsets.only(top: Dimensions.height15,bottom: Dimensions.height15,right: Dimensions.width10,left: Dimensions.width10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: Colors.white
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.remove,color: Appcolors.signcolor,),
-                  SizedBox(width: Dimensions.width5,),
-                  BigText(text: "0"),
-                  SizedBox(width: Dimensions.width5,),
-                  Icon(Icons.add,color: Appcolors.signcolor,),
-                ],
-              ),
+      bottomNavigationBar: GetBuilder<PopularProductController>(builder: (popularProductControllerObject){
+       return Container(
+          height: Dimensions.navigatorHeight120,
+          padding: EdgeInsets.only(top: Dimensions.height30,bottom: Dimensions.height30,left: Dimensions.width20,right: Dimensions.width20),
+          decoration: BoxDecoration(
+              color: Appcolors.buttonbackgroundcolor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimensions.radius20),
+                  topRight: Radius.circular(Dimensions.radius20)
+              )
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //first -0+ container
+              Container(
+                padding: EdgeInsets.only(top: Dimensions.height15,bottom: Dimensions.height15,right: Dimensions.width10,left: Dimensions.width10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                    color: Colors.white
+                ),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                        onTap: (){
+
+                          Get.find<PopularProductController>().setQuantity(false);
+
+                        },
+                        child: Icon(Icons.remove,color: Appcolors.signcolor,)),
+                    SizedBox(width: Dimensions.width5,),
+                    BigText(text: popularProductControllerObject.quantity.toString()),
+                    SizedBox(width: Dimensions.width5,),
+                    GestureDetector(
+                        onTap: (){
+                          Get.find<PopularProductController>().setQuantity(true);
+                        },
+                        child: Icon(Icons.add,color: Appcolors.signcolor,)),
+                  ],
+                ),
 
 
-            ),
-            Container(
-              padding: EdgeInsets.only(top: Dimensions.height15,bottom: Dimensions.height15,right: Dimensions.width10,left: Dimensions.width10),
-
-              child: BigText(text: "100tk add to cart",color: Colors.white,),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius20),
-                color: Appcolors.maincolor,
               ),
-            )
-          ],
-        ),
-      ),
+              Container(
+                padding: EdgeInsets.only(top: Dimensions.height15,bottom: Dimensions.height15,right: Dimensions.width10,left: Dimensions.width10),
+
+                child: BigText(text: "\$ ${product.price!} "+"Add to cart",color: Colors.white,),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius20),
+                  color: Appcolors.maincolor,
+                ),
+              )
+            ],
+          ),
+        );
+      })
       
     );
   }
