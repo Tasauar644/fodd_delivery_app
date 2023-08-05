@@ -18,11 +18,11 @@ class CartController extends GetxController{
     if(_items.containsKey(productModel.id)){
       _items.update(productModel.id!, (value) {
         return CartModel(
-          id:productModel.id,
-          name:productModel.name,
-          price: productModel.price,
-          img : productModel.img,
-          quantity:quantity,
+          id:value.id,
+          name:value.name,
+          price: value.price,
+          img : value.img,
+          quantity:value.quantity!+quantity,
           isExist:true,
           time:DateTime.now().toString(),
         );
@@ -46,5 +46,27 @@ class CartController extends GetxController{
     
   }
 
+  bool existInCart(ProductModel productModel){
+    if(_items.containsKey(productModel.id)){
+
+      return true;
+    }
+    return false;
+
+  }
+
+  int getQuantity(ProductModel productModel){
+    var quantity=0;
+    if(_items.containsKey(productModel.id)){
+      _items.forEach((key, value) {
+        if(key==productModel.id){
+          quantity= value.quantity!;
+        }
+      });
+      return quantity;
+    }
+    return 0;
+
+  }
 
 }

@@ -14,7 +14,7 @@ class PopularProductController extends GetxController{
   int _quantity=0;
   int get quantity=>_quantity;
   int _inCartItems=0;
-  int get intCartItems=>_inCartItems;
+  int get intCartItems=>_inCartItems+_quantity;
 
   late CartController _cart;
 
@@ -59,10 +59,20 @@ class PopularProductController extends GetxController{
       return number;
     }
   }
-  void clearInIt(CartController cart){
+
+  void clearInIt(ProductModel productModel,CartController cart){
     _quantity=0;
     _inCartItems=0;
     _cart=cart;
+    var exist=false;
+    exist=_cart.existInCart(productModel);
+
+    //print("Exist or not: "+exist.toString());
+
+    if(exist){
+      _inCartItems=_cart.getQuantity(productModel);
+    }
+    print("The total item in the cart is: "+_inCartItems.toString());
   }
 
 
@@ -75,6 +85,11 @@ class PopularProductController extends GetxController{
     }
     else {
       _cart.addItem(productModel, _quantity);
+      _quantity=0;
+      _cart.items.forEach((key, value) {
+        print("The food id is "+value.id.toString()+" The added quantity is "+value.quantity.toString());
+
+      });
     }
   }
 
