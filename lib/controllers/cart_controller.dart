@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:food_delivery_app/data/repository/cart_controller_repo.dart';
 import 'package:food_delivery_app/models/products_model.dart';
 import 'package:get/get.dart';
@@ -14,9 +15,9 @@ class CartController extends GetxController{
 
 
   void addItem(ProductModel productModel,int quantity){
-
     if(_items.containsKey(productModel.id)){
       _items.update(productModel.id!, (value) {
+     //   print("update "+value.id.toString()+" to quantity "+quantity.toString());
         return CartModel(
           id:value.id,
           name:value.name,
@@ -30,17 +31,24 @@ class CartController extends GetxController{
     }
 
     else{
-    _items.putIfAbsent(productModel.id!, () {
-    print("adding to the cart "+productModel.id.toString()+"quantity "+quantity.toString());
-    return CartModel(
-    id:productModel.id,
-    name:productModel.name,
-    price: productModel.price,
-    img : productModel.img,
-    quantity:quantity,
-    isExist:true,
-    time:DateTime.now().toString(),
-    );});
+      if(quantity>0){
+        _items.putIfAbsent(productModel.id!, () {
+         // print("adding to the cart "+productModel.id.toString()+" quantity "+quantity.toString());
+          return CartModel(
+            id:productModel.id,
+            name:productModel.name,
+            price: productModel.price,
+            img : productModel.img,
+            quantity:quantity,
+            isExist:true,
+            time:DateTime.now().toString(),
+          );});
+      }
+      else{
+        Get.snackbar("Warning","You have to add at least one item",
+          backgroundColor:Colors.white,
+          colorText: Colors.black87,);
+      }
     }
 
     
