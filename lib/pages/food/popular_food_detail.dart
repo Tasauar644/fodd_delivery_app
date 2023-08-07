@@ -54,10 +54,28 @@ class PopularFoodDetails extends StatelessWidget {
                   onTap: (){
                     Get.toNamed(RouteHelper.getInitial());
                   }
-                  ,child: AppIconWidget(icon: Icons.arrow_back_ios,size: Dimensions.widgetSize50,)
+                  ,child: AppIconWidget(icon: Icons.arrow_back_ios,size: Dimensions.widgetSize50,backGroundColor: Colors.white,)
               ),
-                  AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,)
-                  
+                  GetBuilder<PopularProductController>(builder:(controllerObject){
+                    return Stack(
+                      children: [
+                         AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,backGroundColor: Colors.white,),
+                        controllerObject.totalItems>=1?
+                            Positioned(
+                              top: 0,right: 0
+                                ,child: AppIconWidget(icon: Icons.circle,size: 20,iconColor: Colors.transparent,backGroundColor: Appcolors.maincolor,)):
+                            Container(),
+                        controllerObject.totalItems>=1?
+                        Positioned(
+                            top: 3,right: 3,
+                            child: BigText(text: controllerObject.totalItems.toString(),size: 12,color: Colors.white,)):
+                        Container(),
+
+                      ],
+                    );
+                  }
+
+                  ),
 
                 ],
               ) ),
@@ -119,7 +137,6 @@ class PopularFoodDetails extends StatelessWidget {
                   children: [
                     GestureDetector(
                         onTap: (){
-
                           Get.find<PopularProductController>().setQuantity(false);
 
                         },
@@ -139,7 +156,6 @@ class PopularFoodDetails extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.only(top: Dimensions.height15,bottom: Dimensions.height15,right: Dimensions.width10,left: Dimensions.width10),
-
                 child: GestureDetector(
                     onTap: (){
                       popularProductControllerObject.addItem(product);

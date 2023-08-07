@@ -15,9 +15,12 @@ class CartController extends GetxController{
 
 
   void addItem(ProductModel productModel,int quantity){
+    var totalQuantity=0;
     if(_items.containsKey(productModel.id)){
       _items.update(productModel.id!, (value) {
      //   print("update "+value.id.toString()+" to quantity "+quantity.toString());
+        totalQuantity=value.quantity!+quantity;
+        print("totalQuantity is "+totalQuantity.toString());
         return CartModel(
           id:value.id,
           name:value.name,
@@ -29,6 +32,10 @@ class CartController extends GetxController{
         );
       });
     }
+      if(quantity<=0){
+        _items.remove(productModel.id);
+      }
+
 
     else{
       if(quantity>0){
@@ -74,6 +81,17 @@ class CartController extends GetxController{
       return quantity;
     }
     return 0;
+
+  }
+
+  int get totalitems{
+    var totalQuantity=0;
+
+    _items.forEach((key, value) {
+      totalQuantity+=value.quantity!;
+    });
+
+    return totalQuantity;
 
   }
 
