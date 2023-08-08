@@ -57,6 +57,10 @@ class PopularProductController extends GetxController {
       Get.snackbar("You can not reduce more!", "Order can not be negative",
         backgroundColor: Colors.white,
         colorText: Colors.black87,);
+     /* if(_inCartItems>0){
+        _quantity=_inCartItems;
+        return _quantity;
+      }*/
       return 0;
     }
     else {
@@ -94,6 +98,11 @@ class PopularProductController extends GetxController {
 
   int get totalItems{
     return _cart.totalitems;
+  }
+
+  List<CartModel> get getItems{
+    return _cart.getItems;
+
   }
 
 
