@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: CartPage(),
-     // initialRoute: RouteHelper.initial,
-      //getPages:RouteHelper.routes,
+      home: MainFoodPage(),
+      initialRoute: RouteHelper.initial,
+      getPages:RouteHelper.routes,
     );
   }
 }

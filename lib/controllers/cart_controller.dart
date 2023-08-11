@@ -20,7 +20,7 @@ class CartController extends GetxController{
       _items.update(productModel.id!, (value) {
      //   print("update "+value.id.toString()+" to quantity "+quantity.toString());
         totalQuantity=value.quantity!+quantity;
-        print("totalQuantity is "+totalQuantity.toString());
+       // print("totalQuantity is "+totalQuantity.toString());
         return CartModel(
           id:value.id,
           name:value.name,
@@ -29,6 +29,7 @@ class CartController extends GetxController{
           quantity:value.quantity!+quantity,
           isExist:true,
           time:DateTime.now().toString(),
+          productModel: productModel
         );
       });
     }
@@ -49,6 +50,7 @@ class CartController extends GetxController{
             quantity:quantity,
             isExist:true,
             time:DateTime.now().toString(),
+              productModel: productModel
           );});
       }
       else{
@@ -57,6 +59,7 @@ class CartController extends GetxController{
           colorText: Colors.black87,);
       }
     }
+    update();
 
     
   }

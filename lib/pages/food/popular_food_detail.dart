@@ -13,6 +13,8 @@ import 'package:food_delivery_app/widgets/expandable_text_widget.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../cart/cart_page.dart';
+
 class PopularFoodDetails extends StatelessWidget {
   int pageId;
    PopularFoodDetails({super.key,
@@ -59,7 +61,16 @@ class PopularFoodDetails extends StatelessWidget {
                   GetBuilder<PopularProductController>(builder:(controllerObject){
                     return Stack(
                       children: [
-                         AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,backGroundColor: Colors.white,),
+                         GestureDetector(
+                           onTap: (){
+                             if(controllerObject.totalItems>=1){
+                               Get.toNamed(RouteHelper.getCartPage());
+                             }
+                             else{
+
+                             }
+                           }
+                           ,child: AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,backGroundColor: Colors.white,)),
                         controllerObject.totalItems>=1?
                             Positioned(
                               top: 0,right: 0

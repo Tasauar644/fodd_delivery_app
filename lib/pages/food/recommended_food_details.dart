@@ -43,7 +43,14 @@ class RecommendedFoodDetails extends StatelessWidget {
                 GetBuilder<PopularProductController>(builder:(controllerObject){
                   return Stack(
                     children: [
-                      AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,backGroundColor: Colors.white,),
+                      GestureDetector(
+                        onTap: (){
+                          if(controllerObject.totalItems>0){
+                            Get.toNamed(RouteHelper.getCartPage());
+
+                          }
+                        },
+                          child: AppIconWidget(icon: Icons.shopping_cart_outlined,size: Dimensions.widgetSize50,backGroundColor: Colors.white,)),
                       controllerObject.totalItems>=1?
                       Positioned(
                           top: 0,right: 0
