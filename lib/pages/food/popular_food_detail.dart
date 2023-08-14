@@ -17,8 +17,10 @@ import '../cart/cart_page.dart';
 
 class PopularFoodDetails extends StatelessWidget {
   int pageId;
+  final String page;
    PopularFoodDetails({super.key,
-    required this.pageId}
+    required this.pageId,
+   required this.page}
       );
 
   @override
@@ -54,7 +56,12 @@ class PopularFoodDetails extends StatelessWidget {
                 children: [
                   GestureDetector(
                   onTap: (){
-                    Get.toNamed(RouteHelper.getInitial());
+                   if(page=="cartpage"){
+                     Get.toNamed(RouteHelper.getCartPage());
+                   }
+                   else{
+                     Get.toNamed(RouteHelper.getInitial());
+                   }
                   }
                   ,child: AppIconWidget(icon: Icons.arrow_back_ios,size: Dimensions.widgetSize50,backGroundColor: Colors.white,)
               ),

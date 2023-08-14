@@ -16,9 +16,10 @@ import '../../controllers/populer_product_controller.dart';
 
 class RecommendedFoodDetails extends StatelessWidget {
   var pageId;
+  final String page;
    RecommendedFoodDetails(
       {
-        super.key,required this.pageId
+        super.key,required this.pageId,required this.page
       }
       );
 
@@ -37,7 +38,12 @@ class RecommendedFoodDetails extends StatelessWidget {
               children: [
                GestureDetector(
                 onTap: (){
-                  Get.toNamed(RouteHelper.getInitial());
+                  if(page=="cartpage"){
+                    Get.toNamed(RouteHelper.getCartPage());
+                  }
+                  else{
+                    Get.toNamed(RouteHelper.getInitial());
+                  }
                 }
                    ,child: AppIconWidget(icon: Icons.clear)),
                 GetBuilder<PopularProductController>(builder:(controllerObject){

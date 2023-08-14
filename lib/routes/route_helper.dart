@@ -12,9 +12,9 @@ class RouteHelper {
   static const String recommendedFood = "/recommended-food";
   static const String cartPage = "/cart-page";
 
-  static String getRecommendedFood(int pageId) => '$recommendedFood?pageId=$pageId';
+  static String getRecommendedFood(int pageId,String page) => '$recommendedFood?pageId=$pageId&page=$page';
   static String getInitial() => '$initial';
-  static String getPopularFood(int pageId) => '$popularFood?pageId=$pageId';
+  static String getPopularFood(int pageId,String page) => '$popularFood?pageId=$pageId&page=$page';
   static String getCartPage() => '$cartPage';
 
   static List<GetPage> routes = [
@@ -24,8 +24,10 @@ class RouteHelper {
       name: popularFood,
       page: () {
         var pageId = Get.parameters['pageId'];
-        print(pageId);
-        return PopularFoodDetails(pageId: int.parse(pageId!));
+        var page=Get.parameters['page'];
+
+        //print(pageId);
+        return PopularFoodDetails(pageId: int.parse(pageId!),page:page!);
       },
       transition: Transition.fadeIn,
     ),
@@ -34,8 +36,9 @@ class RouteHelper {
       name: recommendedFood,
       page: () {
         var pageId = Get.parameters['pageId'];
-        print(pageId);
-        return RecommendedFoodDetails(pageId: int.parse(pageId!));
+        var page= Get.parameters['page'];
+        //print(pageId);
+        return RecommendedFoodDetails(pageId: int.parse(pageId!),page:page!);
       },
       transition: Transition.fade,
     ),
