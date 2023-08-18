@@ -27,6 +27,9 @@ class Dimensions{
   static double widgetSize50=screenHeight/15.64;
   static double navigatorHeight120=screenHeight/6.52;
 
+         //Splash Screen
+  static double width250=screenHeight/3.38;
+
 
 
 
